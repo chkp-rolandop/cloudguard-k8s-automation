@@ -37,6 +37,7 @@ CREATION_RESPONSE=$(curl -s -X POST $CLOUDGUARD_BASE_URL/KubernetesAccount --hea
     # Pull cluster ID information
 if CLUSTER_ID=$(echo $CREATION_RESPONSE | jq -r '.id' 2>/dev/null) ; then
 	echo "ClusterID  = $CLUSTER_ID"	    
+	echo $CLUSTER_ID >> onboarded_clusters.txt
     # Enable Runtime Protection
 	curl -X POST $CLOUDGUARD_BASE_URL/KubernetesAccount/runtime-protection/enable --header $CONTENT_TYPE --user $CHKP_CLOUDGUARD_ID:$CHKP_CLOUDGUARD_SECRET --data "{\"k8sAccountId\" : \"$CLUSTER_ID\", \"enabled\" : true}"
     # Enable Admission Controller
