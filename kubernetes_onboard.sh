@@ -22,7 +22,14 @@ fi
 CLOUDGUARD_BASE_URL=https://api.dome9.com/v2
 CONTENT_TYPE=Content-Type:application/json
 
-CLUSTER_NAME=rolo_demo_cluster
+if [[ ! -z $1 ]] ; then
+	CLUSTER_NAME=$1
+elif [[ -v KUBERNETES_CLUSTER_NAME ]] ; then
+	CLUSTER_NAME=$KUBERNETES_CLUSTER_NAME
+else
+	echo "No cluster name defined, set KUBERNETES_CLUSTER_NAME or parameter"
+	exit 1
+fi
 
     # Create Kubernetes Cluster entity in Portal
 CREATION_RESPONSE=$(curl -s -X POST $CLOUDGUARD_BASE_URL/KubernetesAccount --header $CONTENT_TYPE --header 'Accept: application/json' -d "{\"name\" : \"$CLUSTER_NAME\"}" --user $CHKP_CLOUDGUARD_ID:$CHKP_CLOUDGUARD_SECRET)
