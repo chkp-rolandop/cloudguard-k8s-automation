@@ -55,6 +55,7 @@ fi
 
 # THE FOLLOWING COMMANDS REQUIRE ACCESSS TO KUBERNETES CLUSTER TO DEPLOY AGENTS
 helm repo add checkpoint-ea https://raw.githubusercontent.com/CheckPointSW/charts/ea/repository/
+helm repo update
 
 helm install asset-mgmt checkpoint-ea/cloudguard --set credentials.user=$service_account_id --set credentials.secret=$service_account_secret --set clusterID=$CLUSTER_ID --set addons.imageScan.enabled=true --set addons.flowLogs.enabled=true  --set addons.runtimeProtection.enabled=true --set addons.admissionControl.enabled=true   --set imageRegistry.user="checkpoint+consec_read" --set imageRegistry.password=V08FPKKJSHP8YJYLE571MMLAHPOSPX1ASFBI4P875L4ZNQWEXUCEU0V4ASWCZVAZ  --namespace checkpoint --create-namespace
 
