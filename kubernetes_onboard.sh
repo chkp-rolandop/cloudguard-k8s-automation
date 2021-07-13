@@ -56,4 +56,4 @@ fi
 
 # THE FOLLOWING COMMANDS REQUIRE ACCESSS TO KUBERNETES CLUSTER TO DEPLOY AGENTS
 
-helm upgrade --install asset-mgmt cloudguard --repo https://raw.githubusercontent.com/CheckPointSW/charts/ea/repository/ --set credentials.user=$service_account_id --set credentials.secret=$service_account_secret --set clusterID=$CLUSTER_ID --set addons.flowLogs.enabled=true --set addons.imageScan.enabled=true --set addons.admissionControl.enabled=true --set addons.runtimeProtection.enabled=true --set imageRegistry.user="checkpoint+consec_read" --set imageRegistry.password=V08FPKKJSHP8YJYLE571MMLAHPOSPX1ASFBI4P875L4ZNQWEXUCEU0V4ASWCZVAZ --namespace checkpoint --create-namespace
+helm install asset-mgmt cloudguard --repo https://raw.githubusercontent.com/CheckPointSW/charts/master/repository/ --set credentials.user=$service_account_id --set credentials.secret=$service_account_secret --set clusterID=$CLUSTER_ID --set addons.flowLogs.enabled=true --set addons.imageScan.enabled=true --set addons.admissionControl.enabled=true --set addons.runtimeProtection.enabled=true --namespace checkpoint --create-namespace
