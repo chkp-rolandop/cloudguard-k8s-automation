@@ -45,7 +45,7 @@ if CLUSTER_ID=$(echo $CREATION_RESPONSE | jq -r '.id' 2>/dev/null) ; then
 	curl -X POST $CLOUDGUARD_BASE_URL/KubernetesAccount/admission-control/enable --header $CONTENT_TYPE --user $CHKP_CLOUDGUARD_ID:$CHKP_CLOUDGUARD_SECRET --data "{\"k8sAccountId\" : \"$CLUSTER_ID\", \"enabled\" : true}"
     # Enable Log.ic
 
-	curl -X POST $CLOUDGUARD_BASE_URL/KubernetesAccount/magellan-kubernetes-flowlogs/enable --header $CONTENT_TYPE --user $CHKP_CLOUDGUARD_ID:$CHKP_CLOUDGUARD_SECRET --data "{\"k8sAccountId\" : \"$CLUSTER_ID\", \"enabled\" : true}"
+	curl -X POST $CLOUDGUARD_BASE_URL/KubernetesAccount/magellan-kubernetes-flowlogs/enable --header $CONTENT_TYPE --user $CHKP_CLOUDGUARD_ID:$CHKP_CLOUDGUARD_SECRET --data "{\"k8sAccountId\" : \"$CLUSTER_ID\", \"enabled\" : true}" >/dev/null
 
     # Enable Image Assurance
 	curl -X POST $CLOUDGUARD_BASE_URL/KubernetesAccount/vulnerabilityAssessment/enable --header $CONTENT_TYPE --user $CHKP_CLOUDGUARD_ID:$CHKP_CLOUDGUARD_SECRET --data "{\"cloudAccountId\" : \"$CLUSTER_ID\", \"enabled\" : true}"
@@ -55,8 +55,5 @@ else
 fi
 
 # THE FOLLOWING COMMANDS REQUIRE ACCESSS TO KUBERNETES CLUSTER TO DEPLOY AGENTS
-helm repo add checkpoint-ea https://raw.githubusercontent.com/CheckPointSW/charts/ea/repository/
-helm repo update
 
-helm install asset-mgmt checkpoint-ea/cloudguard --set credentials.user=$service_account_id --set credentials.secret=$service_account_secret --set clusterID=$CLUSTER_ID --set addons.imageScan.enabled=true --set addons.flowLogs.enabled=true  --set addons.runtimeProtection.enabled=true --set addons.admissionControl.enabled=true   --set imageRegistry.user="checkpoint+consec_read" --set imageRegistry.password=V08FPKKJSHP8YJYLE571MMLAHPOSPX1ASFBI4P875L4ZNQWEXUCEU0V4ASWCZVAZ  --namespace checkpoint --create-namespace
-
+helm upgrade --install asset-mgmt cloudguard --repo https://raw.githubusercontent.com/CheckPointSW/charts/ea/repository/ --set credentials.user=$service_account_id --set credentials.secret=$service_account_secret --set clusterID=$CLUSTER_ID --set addons.flowLogs.enabled=true --set addons.imageScan.enabled=true --set addons.admissionControl.enabled=true --set addons.runtimeProtection.enabled=true --set imageRegistry.user="checkpoint+consec_read" --set imageRegistry.password=V08FPKKJSHP8YJYLE571MMLAHPOSPX1ASFBI4P875L4ZNQWEXUCEU0V4ASWCZVAZ --namespace checkpoint --create-namespace
